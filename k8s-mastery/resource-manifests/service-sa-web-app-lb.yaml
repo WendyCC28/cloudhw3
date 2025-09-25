@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: sa-web-app-lb          
 spec:
-  type: ClusterIP          
+  type: LoadBalancer   
   selector:
     app: sa-web-app        
   ports:
