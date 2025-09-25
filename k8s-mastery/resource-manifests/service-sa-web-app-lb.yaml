@@ -4,6 +4,7 @@ metadata:
   name: sa-web-app-lb          
 spec:
   type: LoadBalancer
+  loadBalancerIP: 34.134.139.210
   selector:
     app: sa-web-app        
   ports:
@@ -24,5 +25,6 @@ spec:
 #     targetPort: 8080
 #   selector:
 #     app: sa-web-app
+
 
 
