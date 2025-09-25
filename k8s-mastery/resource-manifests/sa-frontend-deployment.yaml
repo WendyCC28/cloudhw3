@@ -1,47 +1,28 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Deployment                                          # 1
 metadata:
   name: sa-frontend
-  namespace: default
+  labels:
+    app: sa-frontend
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app: sa-frontend
+  replicas: 2                                             # 2
+  minReadySeconds: 15
+  strategy:
+    type: RollingUpdate                                   # 3
+    rollingUpdate: 
+      maxUnavailable: 1                                   # 4
+      maxSurge: 1                                         # 5
   template:
     metadata:
       labels:
-        app: sa-frontend
+        app: sa-frontend                                  # 6
     spec:
       containers:
-      - name: sa-frontend
-        image: wendycc28/sa-frontend:v1.0.0
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: nginx-conf
-          mountPath: /etc/nginx/nginx.conf
-          subPath: nginx.conf
-
-        readinessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          failureThreshold: 6
-
-        livenessProbe:
-          httpGet:
-            path: /
-            port: 80
-          initialDelaySeconds: 30
-          periodSeconds: 10
-
-      volumes:
-      - name: nginx-conf
-        configMap:
-          name: sa-frontend-nginx
-          items:
-          - key: nginx.conf
-            path: nginx.conf
+        - image: wendycc28/sa-frontend:v1.0.0
+          imagePullPolicy: IfNotPresent                         # 7
+          name: sa-frontend
+          ports:
+            - containerPort: 80
