@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: sa-web-app-lb          
 spec:
-  type: LoadBalancer   
+  type: ClusterIP  
   selector:
     app: sa-web-app        
   ports:
@@ -24,3 +24,4 @@ spec:
 #     targetPort: 8080
 #   selector:
 #     app: sa-web-app
+
