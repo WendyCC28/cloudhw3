@@ -7,24 +7,26 @@ data:
   nginx.conf: |
     events {}
     http {
-      upstream webapp {
-        server sa-webapp.default.svc.cluster.local:8080;
-      }
+      include       /etc/nginx/mime.types;
+      default_type  application/octet-stream;
+      sendfile      on;
 
       server {
         listen 80;
 
-        
+       
         location / {
           root /usr/share/nginx/html;
           index index.html;
           try_files $uri /index.html;
         }
 
-        
+       
         location /api/ {
-          proxy_pass http://sa-web-app-lb:8080;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_pass http://sa-web-app-lb.default.svc.cluster.local:8080;
+          
         }
       }
     }
-
