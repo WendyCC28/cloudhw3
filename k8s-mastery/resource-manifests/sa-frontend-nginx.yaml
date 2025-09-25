@@ -23,7 +23,8 @@ data:
 
         
         location /api/ {
-          proxy_pass http://webapp/;
+          proxy_pass http://sa-web-app-lb:8080;
         }
       }
     }
+
